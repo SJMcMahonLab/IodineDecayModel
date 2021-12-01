@@ -1,0 +1,82 @@
+# S McMahon Basic Iodine DNA damage model
+# Preparing in Topas 3.6.1
+# Code for handling tuple scoring of energy deposition
+
+#================= Tuple for strand 1 =========================
+# Strand one data
+s:Sc/StrandOne/Quantity = "Tuple"
+s:Sc/StrandOne/Component = "DNATarget"
+s:Sc/StrandOne/OutputFile = "IodineDepositStrandOne"
+s:Sc/StrandOne/OutputType = "ASCII"
+b:Sc/StrandOne/OutputToConsole = "True"
+s:Sc/StrandOne/IfOutputFileAlreadyExists = "Overwrite"
+
+# Alternatively, chemical or physical information can be 
+# disregarded setting to false the following parameters
+b:Sc/StrandOne/IncludeChemicalTrack = "False"
+b:Sc/StrandOne/IncludeParticleName = "True"
+# Additional information is available
+# Physical process. A "none" value is assigned to the chemistry tuple
+b:Sc/StrandOne/IncludePhysicalProcessName  = "True"
+# Event, trackID and parent trackID.
+# For the chemical stage, two parent track IDs are providen
+# as the track is a result of a reaction 
+b:Sc/StrandOne/IncludeEventID = "True"
+b:Sc/StrandOne/IncludeTrackID = "True"
+b:Sc/StrandOne/IncludeParentID = "True"
+# Step number in the scoring region
+b:Sc/StrandOne/IncludeStepNumber = "True"
+# Time of flight
+b:Sc/StrandOne/IncludeGlobalTime = "True"
+# Energy deposited by the tracks and kinetic energy at
+# scoring site.
+b:Sc/StrandOne/IncludeEnergyDeposited = "True"
+b:Sc/StrandOne/IncludeKineticEnergy   = "True"
+# Geometrical information
+b:Sc/StrandOne/IncludeVolumeName = "True"
+b:Sc/StrandOne/IncludeVolumeCopyNumber = "True"
+b:Sc/StrandOne/IncludeVertexPosition = "True"
+
+# Filter based on material to just get strands
+sv:Sc/StrandOne/OnlyIncludeIfInMaterial = 1 "G4_WATER_MODIFIED_1"
+b:Sc/StrandOne/PropagateToChildren = "True"
+
+
+#================= Tuple for strand 2 =========================
+# Clone for strand two
+s:Sc/StrandTwo/Quantity = "Tuple"
+s:Sc/StrandTwo/Component = "DNATarget"
+s:Sc/StrandTwo/OutputFile = "IodineDepositStrandTwo"
+s:Sc/StrandTwo/OutputType = "ASCII"
+b:Sc/StrandTwo/OutputToConsole = "True"
+s:Sc/StrandTwo/IfOutputFileAlreadyExists = "Overwrite"
+
+# Alternatively, chemical or physical information can be 
+# disregarded setting to false the following parameters
+b:Sc/StrandTwo/IncludeChemicalTrack = "False"
+b:Sc/StrandTwo/IncludeParticleName = "True"
+# Additional information is available
+# Physical process. A "none" value is assigned to the chemistry tuple
+b:Sc/StrandTwo/IncludePhysicalProcessName  = "True"
+# Event, trackID and parent trackID.
+# For the chemical stage, two parent track IDs are providen
+# as the track is a result of a reaction 
+b:Sc/StrandTwo/IncludeEventID = "True"
+b:Sc/StrandTwo/IncludeTrackID = "True"
+b:Sc/StrandTwo/IncludeParentID = "True"
+# Step number in the scoring region
+b:Sc/StrandTwo/IncludeStepNumber = "True"
+# Time of flight
+b:Sc/StrandTwo/IncludeGlobalTime = "True"
+# Energy deposited by the tracks and kinetic energy at
+# scoring site.
+b:Sc/StrandTwo/IncludeEnergyDeposited = "True"
+b:Sc/StrandTwo/IncludeKineticEnergy   = "True"
+# Geometrical information
+b:Sc/StrandTwo/IncludeVolumeName = "True"
+b:Sc/StrandTwo/IncludeVolumeCopyNumber = "True"
+b:Sc/StrandTwo/IncludeVertexPosition = "True"
+
+# Filter based on material to just get strands
+sv:Sc/StrandTwo/OnlyIncludeIfInMaterial = 1 "G4_WATER_MODIFIED_2"
+b:Sc/StrandTwo/PropagateToChildren = "True"

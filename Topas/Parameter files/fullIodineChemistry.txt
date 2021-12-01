@@ -1,0 +1,106 @@
+# S McMahon Basic Iodine test
+# Preparing in Topas 3.6.1
+# Iodine chemistry simulation, used for different physics models
+
+# Runtime and control
+i:Ts/NumberOfThreads = 1 
+i:Ts/ShowHistoryCountAtInterval = 100
+i:So/Ion/NumberOfHistoriesInRun = 5000
+i:Ts/Seed = 1
+b:Ts/ShowCPUTime = "true"
+#s:Gr/ViewA/Type = "OpenGL"
+#b:Ts/PauseBeforeSequence="True"
+#b:Ts/PauseBeforeQuit="True"
+
+#=================================
+# Include files to add scoring options
+includeFile = ./physicsTuple.txt
+includeFile = ./chemistryTuple.txt
+
+#==================================================
+# Physics
+s:Ph/ListName = "Default"
+b:Ph/ListProcesses = "False" # Set true to dump list of active physics processes to console
+s:Ph/Default/Type = "Geant4_Modular"
+sv:Ph/Default/Modules = 8 "g4em-dna_opt2" "g4h-phy_QGSP_BIC_HP" "g4decay" "g4ion-binarycascade" "g4h-elastic_HP" "g4stopping" "g4radioactivedecay" "TsEmDNAChemistry" # Change here as desired for different models
+d:Ph/Default/EMRangeMin = 10. eV
+d:Ph/Default/EMRangeMax = 500. MeV
+
+#================================================
+# Chemistry
+includeFile = TOPASChemistry.txt
+s:Ch/ChemistryName = "TOPASChemistry"
+b:Ch/TOPASChemistry/ChemicalStageTransportActive     = "True"
+d:Ch/TOPASChemistry/ChemicalStageTimeEnd             = 1.0 us
+dv:Ch/TOPASChemistry/ChemicalStageTimeStep           = 3 10.0 100000.0 1000000.0 ps 
+dv:Ch/TOPASChemistry/ChemicalStageTimeStepResolution = 3 0.1 1.0 10.0 ps 
+
+#===================Vis===========================
+# Vis
+d:Gr/ViewA/Theta = 55 deg
+d:Gr/ViewA/Phi = 20 deg
+sv:Gr/OnlyIncludeParticlesNamed = 1 "e-"
+s:Gr/ViewA/AxesComponent = "DNATarget" # Component in which to center the axes. Defaults to World.
+d:Gr/AxesComponent/AxesSize = 10. nm # size of axes
+
+
+#==================Source=========================
+s:So/Ion/Type = "Beam"
+s:So/Ion/Component = "BeamPosition"
+s:So/Ion/BeamParticle = "GenericIon(53,125,0)"
+d:So/Ion/BeamEnergy = 0 MeV
+u:So/Ion/BeamEnergySpread = 0
+s:So/Ion/BeamAngularDistribution="None"
+s:So/Ion/BeamPositionDistribution="None"
+d:So/Ion/BeamPositionCutoffX = 1. cm
+d:So/Ion/BeamPositionCutoffY = 1. cm
+i:So/Demo/NumberOfHistoriesInRun = 0
+
+s:Ge/BeamPosition/Parent="World"
+s:Ge/BeamPosition/Type="Group"
+d:Ge/BeamPosition/TransX= 0. nm
+d:Ge/BeamPosition/TransY= 0.15 nm
+d:Ge/BeamPosition/TransZ= 0.17 nm
+d:Ge/BeamPosition/RotX=180. deg
+d:Ge/BeamPosition/RotY=0. deg
+d:Ge/BeamPosition/RotZ=0. deg
+
+#==================Geometry=========================
+s:Ge/World/Material = "Vacuum" 
+s:Ge/World/Type= "TsBox"
+d:Ge/World/HLX = 0.1 cm 
+d:Ge/World/HLY = 0.1 cm
+d:Ge/World/HLZ = 0.1 cm
+b:Ge/World/Invisible = "True"
+
+s:Ge/Bounding/Parent = "World"
+s:Ge/Bounding/Type = "TsBox"
+s:Ge/Bounding/Material = "G4_WATER"
+d:Ge/Bounding/HLX = 10 nm
+d:Ge/Bounding/HLY = 10 nm
+d:Ge/Bounding/HLZ = 20 nm
+d:Ge/Bounding/TransZ = Ge/DNATarget/NumberOfBasePairs * 0.17 nm
+
+s:Ge/DNATarget/Type="TsCharltonDNA"
+s:Ge/DNATarget/Parent="Bounding"
+s:Ge/DNATarget/Material="G4_WATER"
+i:Ge/DNATarget/NumberOfBasePairs = 40
+
+# Material for volumes in strand 1
+s:Ma/G4_WATER_MODIFIED_1/CloneFromMaterial = "G4_WATER"
+d:Ma/G4_WATER_MODIFIED_1/CloneWithDensity  = 1.0 g/cm3
+
+# Auxiliar material for volumes in strand 2
+s:Ma/G4_WATER_MODIFIED_2/CloneFromMaterial = "G4_WATER_MODIFIED_1"
+d:Ma/G4_WATER_MODIFIED_2/CloneWithDensity  = 1.0 g/cm3
+
+#Modified water material is needed for scoring strand breaks:
+s:Ge/DNATarget/BasePair/Material="G4_WATER"
+s:Ge/DNATarget/Sugar1/Material="G4_WATER_MODIFIED_1"
+s:Ge/DNATarget/Sugar2/Material="G4_WATER_MODIFIED_2"
+
+s:Ge/DNATarget/BasePair/DrawingStyle="solid"
+s:Ge/DNATarget/Sugar1/Color="red"
+s:Ge/DNATarget/Sugar1/DrawingStyle="solid"
+s:Ge/DNATarget/Sugar2/Color="blue"
+s:Ge/DNATarget/Sugar2/DrawingStyle="solid"
